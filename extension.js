@@ -54,7 +54,10 @@ function rainbowTags(activeEditor) {
             case '<d':
                 var startPos = activeEditor.document.positionAt(match.index);
                 var endPos = activeEditor.document.positionAt(match.index + 5);
+                var closeTagStartPos = activeEditor.document.positionAt(regEx.lastIndex - 1);
+                var closeTagEndPos = activeEditor.document.positionAt(regEx.lastIndex);
                 var decoration = { range: new vscode.Range(startPos, endPos), hoverMessage: null };
+                var closeTagDecoration = { range: new vscode.Range(closeTagStartPos, closeTagEndPos), hoverMessage: null };
                 roundCalculate = divsColorCount;
                 openDivStack.push(roundCalculate);
                 divsColorCount++;
@@ -62,6 +65,7 @@ function rainbowTags(activeEditor) {
                     divsColorCount = 0;
                 }
                 divsDecorationTypeMap[roundCalculate].push(decoration);
+                divsDecorationTypeMap[roundCalculate].push(closeTagDecoration);
                 break;
             case '</':
                 var startPos = activeEditor.document.positionAt(match.index);
